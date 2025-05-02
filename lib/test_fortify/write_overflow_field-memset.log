@@ -1,0 +1,40 @@
+ok: unsafe memset() usage correctly detected with '__write_overflow_field' in lib/test_fortify/write_overflow_field-memset.c
+In file included from ./include/linux/string.h:254,
+                 from ./include/linux/bitmap.h:11,
+                 from ./include/linux/cpumask.h:12,
+                 from ./arch/x86/include/asm/paravirt.h:17,
+                 from ./arch/x86/include/asm/cpuid.h:62,
+                 from ./arch/x86/include/asm/processor.h:19,
+                 from ./arch/x86/include/asm/cpufeature.h:5,
+                 from ./arch/x86/include/asm/thread_info.h:53,
+                 from ./include/linux/thread_info.h:60,
+                 from ./arch/x86/include/asm/preempt.h:9,
+                 from ./include/linux/preempt.h:78,
+                 from ./include/linux/spinlock.h:56,
+                 from ./include/linux/mmzone.h:8,
+                 from ./include/linux/gfp.h:7,
+                 from ./include/linux/slab.h:15,
+                 from lib/test_fortify/test_fortify.h:4,
+                 from lib/test_fortify/write_overflow_field-memset.c:5:
+lib/test_fortify/test_fortify.h: In function 'do_fortify_tests':
+./include/linux/fortify-string.h:59:29: error: '__builtin_memset' offset 21 from the object at 'instance' is out of the bounds of referenced subobject 'buf' with type 'char[16]' at offset 4 [-Werror=array-bounds]
+   59 | #define __underlying_memset __builtin_memset
+      |                             ^
+./include/linux/fortify-string.h:453:2: note: in expansion of macro '__underlying_memset'
+  453 |  __underlying_memset(p, c, __fortify_size);   \
+      |  ^~~~~~~~~~~~~~~~~~~
+./include/linux/fortify-string.h:461:25: note: in expansion of macro '__fortify_memset_chk'
+  461 | #define memset(p, c, s) __fortify_memset_chk(p, c, s,   \
+      |                         ^~~~~~~~~~~~~~~~~~~~
+lib/test_fortify/write_overflow_field-memset.c:3:2: note: in expansion of macro 'memset'
+    3 |  memset(instance.buf, 0x42, sizeof(instance.buf) + 1)
+      |  ^~~~~~
+lib/test_fortify/test_fortify.h:34:2: note: in expansion of macro 'TEST'
+   34 |  TEST;
+      |  ^~~~
+In function 'fortify_memset_chk',
+    inlined from 'do_fortify_tests' at lib/test_fortify/test_fortify.h:34:2:
+./include/linux/fortify-string.h:430:4: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+  430 |    __write_overflow_field(p_size_field, size);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors

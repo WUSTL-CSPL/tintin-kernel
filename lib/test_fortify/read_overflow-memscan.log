@@ -1,0 +1,23 @@
+ok: unsafe memscan() usage correctly detected with '__read_overflow' in lib/test_fortify/read_overflow-memscan.c
+In file included from ./include/linux/string.h:254,
+                 from ./include/linux/bitmap.h:11,
+                 from ./include/linux/cpumask.h:12,
+                 from ./arch/x86/include/asm/paravirt.h:17,
+                 from ./arch/x86/include/asm/cpuid.h:62,
+                 from ./arch/x86/include/asm/processor.h:19,
+                 from ./arch/x86/include/asm/cpufeature.h:5,
+                 from ./arch/x86/include/asm/thread_info.h:53,
+                 from ./include/linux/thread_info.h:60,
+                 from ./arch/x86/include/asm/preempt.h:9,
+                 from ./include/linux/preempt.h:78,
+                 from ./include/linux/spinlock.h:56,
+                 from ./include/linux/mmzone.h:8,
+                 from ./include/linux/gfp.h:7,
+                 from ./include/linux/slab.h:15,
+                 from lib/test_fortify/test_fortify.h:4,
+                 from lib/test_fortify/read_overflow-memscan.c:5:
+In function 'memscan',
+    inlined from 'do_fortify_tests' at lib/test_fortify/test_fortify.h:34:2:
+./include/linux/fortify-string.h:645:3: error: call to '__read_overflow' declared with attribute error: detected read beyond size of object (1st parameter)
+  645 |   __read_overflow();
+      |   ^~~~~~~~~~~~~~~~~
